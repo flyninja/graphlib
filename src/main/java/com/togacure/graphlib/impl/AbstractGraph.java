@@ -1,6 +1,7 @@
 package com.togacure.graphlib.impl;
 
 import com.togacure.graphlib.exceptions.EdgeExistException;
+import com.togacure.graphlib.exceptions.PathNotFoundException;
 import com.togacure.graphlib.exceptions.VertexExistException;
 import com.togacure.graphlib.exceptions.VertexNotFoundException;
 import com.togacure.graphlib.interfaces.IEdge;
@@ -49,16 +50,20 @@ public abstract class AbstractGraph<T extends IVertex> implements IGraph<T> {
         if (second == null) {
             throw new VertexNotFoundException(edge.getTwo());
         }
-        if ((first.contains(edge.getOne()) && second.contains(edge.getTwo())) || (first.contains(edge.getTwo()) && second.contains(edge.getOne()))) {
-            throw new EdgeExistException(edge);
-        }
+        checkEdgeExist(edge, first, second);
         linkNext(edge.getTwo(), first);
         linkPrev(edge.getOne(), second);
     }
 
     @Override
-    public List<T> getPath(@NonNull T from, @NonNull T to) throws VertexNotFoundException {
+    public List<T> getPath(@NonNull T from, @NonNull T to) throws VertexNotFoundException, PathNotFoundException {
         return pathFinder.findPath(from, to, getVertices());
+    }
+
+    protected void checkEdgeExist(IEdge<T> edge, Set<T> firstNeighbors, Set<T> secondNeighbors) throws EdgeExistException {
+        if (firstNeighbors.contains(edge.getTwo()) && secondNeighbors.contains(edge.getOne())) {
+            throw new EdgeExistException(edge);
+        }
     }
 
     protected Map<T, Set<T>> getVertices() {

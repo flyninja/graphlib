@@ -40,7 +40,7 @@ public class WideSearchPathFinder extends AbstractGraphPathFinder {
                 throw new VertexNotFoundException(current);
             }
             neighbors.stream().filter(next -> !edges.containsKey(next)).forEach(next -> {
-                frontier.offer(current);
+                frontier.offer(next);
                 edges.put(next, current);
             });
         }

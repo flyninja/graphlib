@@ -1,6 +1,7 @@
 package com.togacure.graphlib.interfaces;
 
 import com.togacure.graphlib.enums.PathFinderAlgorithm;
+import com.togacure.graphlib.exceptions.PathNotFoundException;
 import com.togacure.graphlib.exceptions.VertexNotFoundException;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,7 @@ public interface IGraphPathFinder {
      * @param graph - all graph vertices with their neighbors
      * @return single path vertices @{code from} - @{code to}
      * @throws VertexNotFoundException
+     * @throws PathNotFoundException
      */
-    <T extends IVertex> List<T> findPath(T from, T to, Map<T, Set<T>> graph) throws VertexNotFoundException;
+    <T extends IVertex> List<T> findPath(T from, T to, Map<T, Set<T>> graph) throws VertexNotFoundException, PathNotFoundException;
 }

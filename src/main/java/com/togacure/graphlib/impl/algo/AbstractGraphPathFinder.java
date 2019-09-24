@@ -1,5 +1,6 @@
 package com.togacure.graphlib.impl.algo;
 
+import com.togacure.graphlib.exceptions.PathNotFoundException;
 import com.togacure.graphlib.exceptions.VertexNotFoundException;
 import com.togacure.graphlib.interfaces.IGraphPathFinder;
 import com.togacure.graphlib.interfaces.IVertex;
@@ -30,7 +31,7 @@ public abstract class AbstractGraphPathFinder implements IGraphPathFinder {
     protected int frontierQueueCapacity = 16;
 
     @Override
-    public <T extends IVertex> List<T> findPath(@NonNull T from, @NonNull T to, @NonNull Map<T, Set<T>> graph) throws VertexNotFoundException {
+    public <T extends IVertex> List<T> findPath(@NonNull T from, @NonNull T to, @NonNull Map<T, Set<T>> graph) throws VertexNotFoundException, PathNotFoundException {
         return findSinglePath(from, to, findAllPaths(from, to, graph));
     }
 
@@ -53,14 +54,19 @@ public abstract class AbstractGraphPathFinder implements IGraphPathFinder {
      * @param to    - vertex goal
      * @param edges - all possible paths as back-linked edges set
      * @return - ordered vertices list as (non optimal) path
+     * @throws PathNotFoundException
      */
-    protected <T extends IVertex> List<T> findSinglePath(@NonNull T from, @NonNull T to, @NonNull Map<T, T> edges) {
+    protected <T extends IVertex> List<T> findSinglePath(@NonNull T from, @NonNull T to, @NonNull Map<T, T> edges) throws PathNotFoundException {
         val result = new LinkedList<T>();
         T current = to;
         do {
             result.addFirst(current);
             current = edges.get(current);
+            if (current == null) {
+                throw new PathNotFoundException(from, to);
+            }
         } while (!current.equals(from));
+        result.addFirst(from);
         return result;
     }
 

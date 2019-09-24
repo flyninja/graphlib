@@ -2,6 +2,7 @@ package com.togacure.graphlib.impl;
 
 
 import com.togacure.graphlib.exceptions.EdgeExistException;
+import com.togacure.graphlib.exceptions.PathNotFoundException;
 import com.togacure.graphlib.exceptions.VertexExistException;
 import com.togacure.graphlib.exceptions.VertexNotFoundException;
 import com.togacure.graphlib.interfaces.IEdge;
@@ -34,7 +35,7 @@ public class UndirectedGraph<T extends IVertex> extends AbstractGraph<T> {
     }
 
     @Override
-    public synchronized List<T> getPath(@NonNull T from, @NonNull T to) throws VertexNotFoundException {
+    public synchronized List<T> getPath(@NonNull T from, @NonNull T to) throws VertexNotFoundException, PathNotFoundException {
         return super.getPath(from, to);
     }
 }
