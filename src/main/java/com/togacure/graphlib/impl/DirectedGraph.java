@@ -1,6 +1,5 @@
 package com.togacure.graphlib.impl;
 
-
 import com.togacure.graphlib.exceptions.EdgeExistException;
 import com.togacure.graphlib.exceptions.PathNotFoundException;
 import com.togacure.graphlib.exceptions.VertexExistException;
@@ -14,14 +13,14 @@ import java.util.Set;
 import lombok.NonNull;
 
 /**
- * Undirected full (read/write) thread-safe graph implementation
+ * Directed full (read/write) thread-safe graph implementation
  *
  * @author Vitaly Alekseev
- * @since 9/23/2019
+ * @since 9/25/2019
  */
-public class UndirectedGraph<T extends IVertex> extends AbstractGraph<T> {
+public class DirectedGraph<T extends IVertex> extends AbstractGraph<T> {
 
-    public UndirectedGraph(@NonNull IGraphPathFinder pathFinder) {
+    public DirectedGraph(@NonNull IGraphPathFinder pathFinder) {
         super(pathFinder, new HashMap<>());
     }
 
@@ -40,8 +39,12 @@ public class UndirectedGraph<T extends IVertex> extends AbstractGraph<T> {
         return super.getPath(from, to);
     }
 
+    protected void linkPrev(T prev, Set<T> nextNeighbors) {
+
+    }
+
     protected void checkEdgeExist(IEdge<T> edge, Set<T> firstNeighbors, Set<T> secondNeighbors) throws EdgeExistException {
-        if (firstNeighbors.contains(edge.getTwo()) && secondNeighbors.contains(edge.getOne())) {
+        if (firstNeighbors.contains(edge.getTwo())) {
             throw new EdgeExistException(edge);
         }
     }

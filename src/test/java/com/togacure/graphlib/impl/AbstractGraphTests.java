@@ -1,6 +1,5 @@
 package com.togacure.graphlib.impl;
 
-import com.togacure.graphlib.Edge;
 import com.togacure.graphlib.TestVertex;
 import com.togacure.graphlib.enums.GraphType;
 import com.togacure.graphlib.enums.PathFinderAlgorithm;
@@ -13,50 +12,31 @@ import lombok.SneakyThrows;
 import lombok.val;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 /**
  * @author Vitaly Alekseev
- * @since 9/24/2019
+ * @since 9/25/2019
  */
-@RunWith(SpringRunner.class)
-@ComponentScan(basePackageClasses = { Edge.class })
-@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = { UndirectedGraphTest.class })
-public class UndirectedGraphTest {
+public abstract class AbstractGraphTests {
 
     @Autowired
-    private IGraphFactory factory;
+    protected IGraphFactory factory;
+
+    protected abstract IGraph<TestVertex> getGraph();
 
     @Test(expected = VertexExistException.class)
     @SneakyThrows
     public void buildWithExistVertexFaultTest() {
-        final IGraph<TestVertex> graph = factory.getGraph(GraphType.UNDIRECTED, PathFinderAlgorithm.WIDE_SEARCH);
-        Assert.assertTrue(graph instanceof UndirectedGraph);
-
+        final IGraph<TestVertex> graph = getGraph();
         val testCases = TestVertex.buildTestCases(graph, 3);
         graph.addVertex(new TestVertex(1));
-    }
-
-    @Test(expected = EdgeExistException.class)
-    @SneakyThrows
-    public void buildWithExistEdgeFaultTest() {
-        final IGraph<TestVertex> graph = factory.getGraph(GraphType.UNDIRECTED, PathFinderAlgorithm.WIDE_SEARCH);
-        Assert.assertTrue(graph instanceof UndirectedGraph);
-
-        val testCases = TestVertex.buildTestCases(graph, 3);
-        TestVertex.buildNeighbors(graph, testCases.get(0/*1*/), 3);
-        TestVertex.buildNeighbors(graph, testCases.get(2/*3*/), 1);
     }
 
     @Test
     @SneakyThrows
     public void findPathWithSingleExistPathSuccessTest() {
-        final IGraph<TestVertex> graph = factory.getGraph(GraphType.UNDIRECTED, PathFinderAlgorithm.WIDE_SEARCH);
+        final IGraph<TestVertex> graph = getGraph();
 
         val testCases = TestVertex.buildTestCases(graph, 10);
 
@@ -92,7 +72,7 @@ public class UndirectedGraphTest {
     @Test(expected = PathNotFoundException.class)
     @SneakyThrows
     public void findPathWithNotExistPathSuccessTest() {
-        final IGraph<TestVertex> graph = factory.getGraph(GraphType.UNDIRECTED, PathFinderAlgorithm.WIDE_SEARCH);
+        final IGraph<TestVertex> graph = getGraph();
 
         val testCases = TestVertex.buildTestCases(graph, 10);
 
@@ -120,7 +100,7 @@ public class UndirectedGraphTest {
     @Test
     @SneakyThrows
     public void findPathWithDoubleExistPathSuccessTest() {
-        final IGraph<TestVertex> graph = factory.getGraph(GraphType.UNDIRECTED, PathFinderAlgorithm.WIDE_SEARCH);
+        final IGraph<TestVertex> graph = getGraph();
 
         val testCases = TestVertex.buildTestCases(graph, 10);
 

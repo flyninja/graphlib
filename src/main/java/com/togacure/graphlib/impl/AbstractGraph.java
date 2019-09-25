@@ -60,11 +60,7 @@ public abstract class AbstractGraph<T extends IVertex> implements IGraph<T> {
         return pathFinder.findPath(from, to, getVertices());
     }
 
-    protected void checkEdgeExist(IEdge<T> edge, Set<T> firstNeighbors, Set<T> secondNeighbors) throws EdgeExistException {
-        if (firstNeighbors.contains(edge.getTwo()) && secondNeighbors.contains(edge.getOne())) {
-            throw new EdgeExistException(edge);
-        }
-    }
+    protected abstract void checkEdgeExist(IEdge<T> edge, Set<T> firstNeighbors, Set<T> secondNeighbors) throws EdgeExistException;
 
     protected Map<T, Set<T>> getVertices() {
         return vertices;

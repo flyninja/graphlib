@@ -35,7 +35,9 @@ public class GraphFactory implements IGraphFactory {
         val finder = pathFinders.stream().filter(pathFinderPredicate).findFirst().orElseThrow(() -> new PathFinderNotFoundException());
         switch (type) {
             case UNDIRECTED:
-                return new UndirectedGraph(finder);
+                return new UndirectedGraph<T>(finder);
+            case DIRECTED:
+                return new DirectedGraph<T>(finder);
             default:
                 throw new UnsupportedGraphTypeException(type);
         }
