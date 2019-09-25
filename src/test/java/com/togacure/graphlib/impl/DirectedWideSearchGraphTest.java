@@ -42,4 +42,16 @@ public class DirectedWideSearchGraphTest extends AbstractGraphTests {
         TestVertex.buildNeighbors(graph, testCases.get(0/*1*/), 3);
     }
 
+    @Test
+    @SneakyThrows
+    public void buildAddReturnEdgeSuccessTest() {
+        final IGraph<TestVertex> graph = getGraph();
+        val testCases = TestVertex.buildTestCases(graph, 3);
+        TestVertex.buildNeighbors(graph, testCases.get(0/*1*/), 3);
+        try {
+            TestVertex.buildNeighbors(graph, testCases.get(2/*3*/), 1);
+        } catch (Exception e) {
+            Assert.fail(e.getMessage());
+        }
+    }
 }
