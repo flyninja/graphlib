@@ -32,12 +32,12 @@ public abstract class AbstractGraphPathFinder implements IGraphPathFinder {
 
     @Override
     public <T extends IVertex> List<T> findPath(@NonNull T from, @NonNull T to, @NonNull Map<T, Set<T>> graph) throws VertexNotFoundException, PathNotFoundException {
-        return findSinglePath(from, to, findAllPaths(from, to, graph));
+        return findSinglePath(from, to, findAllOutgoingEdges(from, to, graph));
     }
 
 
     /**
-     * API for find all possible paths as back-linked edges set
+     * API for find all outgoing @{code from} edges as back-linked edges set
      *
      * @param from  - vertex start
      * @param to    - vertex goal
@@ -45,7 +45,7 @@ public abstract class AbstractGraphPathFinder implements IGraphPathFinder {
      * @return - back-linked edges set
      * @throws VertexNotFoundException
      */
-    protected abstract <T extends IVertex> Map<T, T> findAllPaths(T from, T to, Map<T, Set<T>> graph) throws VertexNotFoundException;
+    protected abstract <T extends IVertex> Map<T, T> findAllOutgoingEdges(T from, T to, Map<T, Set<T>> graph) throws VertexNotFoundException;
 
     /**
      * Override for optimize single path search

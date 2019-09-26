@@ -26,7 +26,7 @@ public class WideSearchPathFinder extends AbstractGraphPathFinder {
     }
 
     @Override
-    protected <T extends IVertex> Map<T, T> findAllPaths(@NonNull T from, @NonNull T to, @NonNull Map<T, Set<T>> graph) throws VertexNotFoundException {
+    protected <T extends IVertex> Map<T, T> findAllOutgoingEdges(@NonNull T from, @NonNull T to, @NonNull Map<T, Set<T>> graph) throws VertexNotFoundException {
         val edges = new HashMap<T, T>();
         val frontier = new ArrayDeque<T>(toPowOf2(frontierQueueCapacity));
         frontier.offer(from);
